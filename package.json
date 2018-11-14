@@ -13,5 +13,9 @@
     "fs-extra": "^7.0.1",
     "html-minifier": "^3.5.21"
   },
-  "files": []
+  "files": [
+    "**/*.js",
+    "bin/**/*"
+  ],
+  "bin": "./bin/htmlrapier-compile"
 }
