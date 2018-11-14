@@ -4,7 +4,6 @@
       "noEmitOnError": true,
       "removeComments": false,
       "sourceMap": false,
-      "outDir": "bin",
       "allowJs": true,
       "target": "es5",
       "moduleResolution": "node",
