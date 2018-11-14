@@ -1,5 +1,5 @@
 {
-  "name": "htmlrapier-component-compiler",
+  "name": "htmlrapier.compile",
   "version": "0.0.0",
   "private": false,
   "dependencies": {
