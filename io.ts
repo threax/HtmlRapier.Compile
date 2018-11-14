@@ -1,33 +1,52 @@
 var fs = require('fs-extra');
+import {ExternalPromise} from './externalPromise';
+
+interface NodeStats{
+    isFile();
+    isDirectory();
+}
 
 /**
- * This is a wrapper for a promise that exposes the resolve
- * and reject functions.
+ * Get the node fsstat results for a path. This will return promise.
  */
-export class ExternalPromise<T> {
-    private resolveCb;
-    private rejectCb;
-    private _promise : Promise<T>;
+export function fsstat(path): Promise<NodeStats>{
+    var ep = new ExternalPromise<NodeStats>();
 
-    constructor(){
-        this._promise = new Promise<T>((resolve, reject) => {
-            this.resolveCb = resolve;
-            this.rejectCb = reject;
+    fs.stat(path, (err, stats) =>{
+        if(err){ return ep.reject(err); }
+        ep.resolve(stats);
+    });
+
+    return ep.Promise;
+}
+
+export function ensureFile(path: string): Promise<any>{
+    var ep = new ExternalPromise();
+    fs.ensureFile(path, err =>{
+        if (err){ return ep.reject(err); }
+        ep.resolve(undefined);
+    });
+    return ep.Promise;
+}
+
+export function ensureDir(path: string): Promise<any>{
+    var ep = new ExternalPromise();
+    fs.ensureDir(path, err =>{
+        if (err){ return ep.reject(err); }
+        ep.resolve(undefined);
+    });
+    return ep.Promise;
+}
+
+export function copy(src: string, dest: string){
+    var ep = new ExternalPromise();
+    fs.copy(src, dest, 
+        err => {
+            if (err){ return ep.reject(err); }
+            ep.resolve();
         });
-    }
-
-    resolve(data?:T){
-        this.resolveCb(data);
-    }
-
-    reject(error){
-        this.rejectCb(error);
-    }
-
-    get Promise(){
-        return this._promise;
-    }
-};
+    return ep.Promise;
+}
 
 export function readFile(path: string): Promise<any>{
     var ep = new ExternalPromise();
@@ -45,5 +64,14 @@ export function writeFile(path: string, data: any){
             if (err){ return ep.reject(err); }
             ep.resolve();
         });
+    return ep.Promise;
+}
+
+export function emptyDir(path: string): Promise<any>{
+    var ep = new ExternalPromise();
+    fs.emptyDir(path, (err, data) => {
+        if (err){ return ep.reject(err); }
+        ep.resolve(data);
+    });
     return ep.Promise;
 }
