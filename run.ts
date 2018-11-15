@@ -11,6 +11,12 @@ const { JSDOM } = jsdom;
     var inputFile = process.argv[2];
     var outputFile = process.argv[3];
 
+    var amdName = null;
+    if(process.argv.length > 4){
+        amdName = process.argv[4];
+        console.log("amd module name " + amdName);
+    }
+
     console.log("Loading " + inputFile);
 
     var html = await io.readFile(inputFile);
@@ -26,6 +32,9 @@ const { JSDOM } = jsdom;
 import {ComponentBuilder, VariantBuilder} from 'hr.componentbuilder';
 
 var builder;`;
+    if(amdName !== null){
+        output = '///<amd-module name="' + amdName + '"/>\n\n' + output;
+    }
     var currentBuilder = "";
     for(var i = 0; i < templates.length; ++i){
         var template: HTMLTemplateElement = templates[i] as HTMLTemplateElement;

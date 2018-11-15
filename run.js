@@ -47,7 +47,7 @@ var JSDOM = jsdom.JSDOM;
                 currentBuilder = "";
             }
         }
-        var inputFile, outputFile, html, dom, document, templates, component, variant, prefix, suffix, output, currentBuilder, i, template;
+        var inputFile, outputFile, amdName, html, dom, document, templates, component, variant, prefix, suffix, output, currentBuilder, i, template;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -57,6 +57,11 @@ var JSDOM = jsdom.JSDOM;
                     }
                     inputFile = process.argv[2];
                     outputFile = process.argv[3];
+                    amdName = null;
+                    if (process.argv.length > 4) {
+                        amdName = process.argv[4];
+                        console.log("amd module name " + amdName);
+                    }
                     console.log("Loading " + inputFile);
                     return [4 /*yield*/, io.readFile(inputFile)];
                 case 1:
@@ -66,6 +71,9 @@ var JSDOM = jsdom.JSDOM;
                     templates = document.getElementsByTagName("TEMPLATE");
                     component = null;
                     output = "import * as component from 'hr.components';\nimport {ComponentBuilder, VariantBuilder} from 'hr.componentbuilder';\n\nvar builder;";
+                    if (amdName !== null) {
+                        output = '///<amd-module name="' + amdName + '"/>\n\n' + output;
+                    }
                     currentBuilder = "";
                     for (i = 0; i < templates.length; ++i) {
                         template = templates[i];
