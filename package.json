@@ -1,6 +1,6 @@
 {
   "name": "htmlrapier-compile",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": false,
   "dependencies": {
     "tslib": "^1.6.1",
