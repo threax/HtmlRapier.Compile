@@ -28,8 +28,8 @@ const { JSDOM } = jsdom;
     var prefix;
     var suffix;
     var output = 
-`import * as component from 'hr.components';
-import {ComponentBuilder, VariantBuilder} from 'hr.componentbuilder';
+`import * as component from 'htmlrapier/src/components';
+import {ComponentBuilder, VariantBuilder} from 'htmlrapier/src/componentbuilder';
 
 var builder;`;
     if(amdName !== null){
@@ -53,6 +53,8 @@ var builder;`;
         currentBuilder += prefix + minify(template.innerHTML) + suffix;
     }
     finishComponent();
+
+    output += '\n\nexport function setup() { return true; } //Does not do anything, but makes module work.';
 
     console.log("Writing " + outputFile);
     await io.writeFile(outputFile, output);

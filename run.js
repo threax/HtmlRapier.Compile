@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -13,9 +14,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
                 case 0: case 1: t = op; break;
                 case 4: _.label++; return { value: op[1], done: false };
@@ -70,7 +71,7 @@ var JSDOM = jsdom.JSDOM;
                     document = dom.window.document;
                     templates = document.getElementsByTagName("TEMPLATE");
                     component = null;
-                    output = "import * as component from 'hr.components';\nimport {ComponentBuilder, VariantBuilder} from 'hr.componentbuilder';\n\nvar builder;";
+                    output = "import * as component from 'htmlrapier/src/components';\nimport {ComponentBuilder, VariantBuilder} from 'htmlrapier/src/componentbuilder';\n\nvar builder;";
                     if (amdName !== null) {
                         output = '///<amd-module name="' + amdName + '"/>\n\n' + output;
                     }
@@ -91,6 +92,7 @@ var JSDOM = jsdom.JSDOM;
                         currentBuilder += prefix + minify(template.innerHTML) + suffix;
                     }
                     finishComponent();
+                    output += '\n\nexport function setup() { return true; } //Does not do anything, but makes module work.';
                     console.log("Writing " + outputFile);
                     return [4 /*yield*/, io.writeFile(outputFile, output)];
                 case 2:
